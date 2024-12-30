@@ -1,6 +1,6 @@
 # TakTick - Task Management Application
 
-A modern task management application built with React and Node.js, featuring real-time updates, drag-and-drop functionality, and intuitive task organization.
+A modern task management application built with React and Node.js, featuring intuitive task organization.
 
 ## Live Demo
 
@@ -16,7 +16,7 @@ Visit [TakTick](https://taktick.netlify.app/) to try the application.
 
 - User authentication and authorization
 - Create, edit, and delete tasks
-- Task status tracking (Draft, In Progress, On Hold, Completed)
+- Task status tracking (Draft, In Progress, On Hold, Completed, Deleted)
 - Priority levels management
 - Due date tracking
 - Task statistics and data visualization
