@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { AlertCircle, Calendar, LayoutDashboard, ChevronDown } from 'lucide-react';
 import { format, isBefore, addDays } from 'date-fns';
 import NewTaskPopup from './NewTaskPopup';
@@ -193,6 +193,28 @@ const TaskList = ({ user, onLogout }) => {
     setSelectedTaskId(null);
   };
 
+  const CustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }) => {  
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  
+    if (percent < 0.05) return null;
+  
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+        className="text-sm"
+      >
+        {`${name}: ${(percent * 100).toFixed(1)}%`}
+      </text>
+    );
+  };
+
   return (
     <div className="min-h-screen w-full flex flex-col bg-zinc-900">
       {/* Header */}
@@ -260,25 +282,36 @@ const TaskList = ({ user, onLogout }) => {
               {/* Status Distribution */}
               <div className="bg-zinc-800 rounded-xl p-6">
                 <h2 className="text-xl font-semibold text-cyan-400 mb-4">Status Distribution</h2>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
+                <div className="h-[300px] md:h-[400px]">
+                    <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
-                      <Pie
+                        <Pie
                         data={getStatusStats()}
                         dataKey="value"
                         nameKey="name"
                         cx="50%"
                         cy="50%"
-                        outerRadius={80}
-                        label={({ name, percentage }) => `${name}: ${percentage}%`}
-                      >
+                        outerRadius={window.innerWidth < 768 ? 60 : 80}
+                        labelLine={false}
+                        label={window.innerWidth < 768 ? null : CustomLabel}
+                        >
                         {getStatusStats().map((entry, index) => (
-                          <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
+                            <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
                         ))}
-                      </Pie>
-                      <Tooltip />
+                        </Pie>
+                        {window.innerWidth < 768 && (
+                        <Legend
+                            layout="vertical"
+                            align="center"
+                            verticalAlign="bottom"
+                            formatter={(value, entry) => `${value}: ${entry.payload.percentage}%`}
+                        />
+                        )}
+                        <Tooltip 
+                        formatter={(value, name, props) => [`${props.payload.percentage}%`, name]}
+                        />
                     </PieChart>
-                  </ResponsiveContainer>
+                    </ResponsiveContainer>
                 </div>
               </div>
 
