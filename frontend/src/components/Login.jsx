@@ -8,17 +8,39 @@ const Login = ({ setUser }) => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
+  //       username,
+  //       password,
+  //     });
+  //     setUser(response.data); // Save user data
+  //     setError('');
+  //   } catch (error) {
+  //     console.error("Login error:", error); // debugging
+  //     setError(error.response?.data?.message || 'Login failed');
+  //   }
+  // };
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
+      const loginPayload = {
         username,
         password,
-      });
+      };
+  
+      console.log("Sending login request to:", `${import.meta.env.VITE_API_URL}/users/login`);
+      console.log("Request payload:", loginPayload);
+  
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, loginPayload);
+  
+      console.log("Login response:", response.data); // Debugging response
       setUser(response.data); // Save user data
       setError('');
     } catch (error) {
-      console.error("Login error:", error); // debugging
+      console.error("Login error:", error); // Debugging
+      console.error("Error response:", error.response); // Log the full error response
       setError(error.response?.data?.message || 'Login failed');
     }
   };
