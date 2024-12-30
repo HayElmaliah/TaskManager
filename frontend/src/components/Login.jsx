@@ -60,7 +60,7 @@ const Login = ({ setUser }) => {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-zinc-900 text-white">
       {/* Logo */}
-      <h1 className="text-3xl font-bold text-cyan-400 mb-6">Task Track</h1>
+      <h1 className="text-3xl font-bold text-cyan-400 mb-6">TakTick</h1>
       
       {/* Environment indicator - only show in development */}
       {import.meta.env.DEV && (

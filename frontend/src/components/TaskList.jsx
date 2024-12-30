@@ -199,7 +199,7 @@ const TaskList = ({ user, onLogout }) => {
       <header className="sticky top-0 z-10 bg-zinc-800 border-b border-zinc-700">
         <div className="max-w-7xl mx-auto w-full px-4 py-3">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-cyan-400">Task Track</h1>
+          <h1 className="text-2xl font-bold text-cyan-400">TakTick</h1>
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setView(view === 'table' ? 'workspace' : 'table')}
