@@ -31,6 +31,14 @@ const STATUS_COLORS = {
   5: "bg-red-200 text-red-800",
 };
 
+const STATUS_CHART_COLORS = {
+    1: '#60A5FA', // Draft - Blue
+    2: '#34D399', // In Progress - Green
+    3: '#FCD34D', // On Hold - Yellow
+    4: '#A78BFA', // Completed - Purple
+    5: '#F87171', // Deleted - Red
+  };
+
 const TaskList = ({ user, onLogout }) => {
   const [tasks, setTasks] = useState([]);
   const [view, setView] = useState('table');
@@ -142,10 +150,14 @@ const TaskList = ({ user, onLogout }) => {
       return acc;
     }, {});
 
-    return Object.entries(STATUS_LABELS).map(([id, label]) => ({
+    return Object.entries(STATUS_LABELS)
+    .filter(([id]) => statusCounts[id] > 0) // Only include statuses that have tasks
+    .map(([id, label]) => ({
+      id: parseInt(id),
       name: label,
-      value: (statusCounts[id] || 0),
-      percentage: ((statusCounts[id] || 0) / total * 100).toFixed(1)
+      value: statusCounts[id] || 0,
+      percentage: ((statusCounts[id] || 0) / total * 100).toFixed(1),
+      color: STATUS_CHART_COLORS[id]
     }));
   };
 
@@ -282,7 +294,7 @@ const TaskList = ({ user, onLogout }) => {
               {/* Status Distribution */}
               <div className="bg-zinc-800 rounded-xl p-6">
                 <h2 className="text-xl font-semibold text-cyan-400 mb-4">Status Distribution</h2>
-                <div className="h-[300px] md:h-[400px]">
+                <div className="h-[300px] md:h-[400px] flex flex-col md:flex-row items-center">
                     <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Pie
@@ -293,20 +305,31 @@ const TaskList = ({ user, onLogout }) => {
                         cy="50%"
                         outerRadius={window.innerWidth < 768 ? 60 : 80}
                         labelLine={false}
-                        label={window.innerWidth < 768 ? null : CustomLabel}
                         >
                         {getStatusStats().map((entry, index) => (
-                            <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
+                            <Cell key={entry.name} fill={STATUS_CHART_COLORS[index + 1]} />
                         ))}
                         </Pie>
-                        {window.innerWidth < 768 && (
                         <Legend
-                            layout="vertical"
-                            align="center"
-                            verticalAlign="bottom"
-                            formatter={(value, entry) => `${value}: ${entry.payload.percentage}%`}
-                        />
+                        layout="vertical"
+                        align={window.innerWidth < 768 ? "center" : "right"}
+                        verticalAlign={window.innerWidth < 768 ? "bottom" : "middle"}
+                        content={({ payload }) => (
+                            <div className="flex flex-col gap-2 px-4">
+                            {payload.map((entry, index) => (
+                                <div key={`legend-${index}`} className="flex items-center gap-2">
+                                <div 
+                                    className="w-3 h-3 rounded-sm" 
+                                    style={{ backgroundColor: entry.color }}
+                                />
+                                <span className="text-sm text-zinc-300">
+                                    {entry.value}: {entry.payload.percentage}%
+                                </span>
+                                </div>
+                            ))}
+                            </div>
                         )}
+                        />
                         <Tooltip 
                         formatter={(value, name, props) => [`${props.payload.percentage}%`, name]}
                         />
