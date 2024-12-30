@@ -6,22 +6,9 @@ A modern task management application built with React and Node.js, featuring rea
 
 Visit [TakTick](https://taktick.netlify.app/) to try the application.
 
-## Screenshots
+## Preview
 
-### Login Screen
-![Login Screen](./screenshots/login_screen.png)
-
-### Task List
-![Task List](./screenshots/task_list.png)
-
-### Task Statistics
-![Task Statistics](./screenshots/task_statistics.png)
-
-### Add New Task
-![Add New Task](./screenshots/add_new_task.png)
-
-### Edit Task
-![Edit Task](./screenshots/edit_task.png)
+![Application Screenshots](screenshots/gif-shots.gif)
 
 ## Features
 
