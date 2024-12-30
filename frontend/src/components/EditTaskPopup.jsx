@@ -15,6 +15,12 @@ const STATUS_LABELS = {
   5: "Deleted",
 };
 
+const getMinDate = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today.toISOString().split('T')[0];
+  };
+
 const EditTaskPopup = ({ task, onSave, onClose }) => {
   const [editedTask, setEditedTask] = useState({...task});
 
@@ -54,6 +60,7 @@ const EditTaskPopup = ({ task, onSave, onClose }) => {
               type="date"
               value={editedTask.due_date ? editedTask.due_date.split('T')[0] : ''}
               onChange={(e) => setEditedTask({ ...editedTask, due_date: e.target.value })}
+              min={getMinDate()}
               className="w-full p-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
               required
             />

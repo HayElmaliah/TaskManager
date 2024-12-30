@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 
+const getMinDate = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today.toISOString().split('T')[0];
+  };
+
 const NewTaskPopup = ({ onAdd, onClose, user }) => {
   const [newTask, setNewTask] = useState({
     title: '',
@@ -44,6 +50,7 @@ const NewTaskPopup = ({ onAdd, onClose, user }) => {
             type="date"
             value={newTask.due_date}
             onChange={(e) => setNewTask({ ...newTask, due_date: e.target.value })}
+            min={getMinDate()}
             className="w-full p-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
             required
           />
