@@ -1,40 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Login = ({ setUser }) => {
-  const [isRegistering, setIsRegistering] = useState(false); // Toggle between login and register
+  const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    console.log('Current Environment:', import.meta.env.MODE);
+    console.log('API URL:', apiUrl);
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
+    
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
+      console.log('Attempting login at:', `${apiUrl}/users/login`);
+      
+      const response = await axios.post(`${apiUrl}/users/login`, {
         username,
         password,
       });
-      setUser(response.data); // Save user data
-      setError('');
+      
+      console.log('Login successful:', response.data);
+      setUser(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data));
     } catch (error) {
-      setError(error.response?.data?.message || 'Login failed');
+      console.error('Login error:', error.response?.data || error.message);
+      setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError('');
+    
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/users/register`, {
+      console.log('Attempting registration at:', `${apiUrl}/users/register`);
+      
+      const response = await axios.post(`${apiUrl}/users/register`, {
         username,
         password,
       });
+
+      console.log('Registration successful:', response.data);
       setSuccessMessage('Registration successful! You can now log in.');
-      setIsRegistering(false); // Switch to login form
+      setIsRegistering(false);
       setError('');
     } catch (error) {
-      console.error("Registration error:", error);
-      setError(error.response?.data?.message || 'Registration failed');
+      console.error('Registration error:', error.response?.data || error.message);
+      setError(error.response?.data?.message || 'Registration failed. Please try again.');
     }
   };
 
@@ -43,9 +62,15 @@ const Login = ({ setUser }) => {
       {/* Logo */}
       <h1 className="text-3xl font-bold text-cyan-400 mb-6">Task Track</h1>
       
+      {/* Environment indicator - only show in development */}
+      {import.meta.env.DEV && (
+        <div className="text-xs text-zinc-500 mb-2">
+          API URL: {apiUrl}
+        </div>
+      )}
+      
       {/* Form Container */}
       <div className="bg-zinc-800 p-6 rounded-xl shadow-lg w-80">
-        {/* Toggle between Login and Register */}
         {isRegistering ? (
           <>
             <h2 className="text-2xl font-bold mb-4 text-cyan-400">Register</h2>
@@ -83,7 +108,11 @@ const Login = ({ setUser }) => {
               Already registered?{' '}
               <span
                 className="text-cyan-400 cursor-pointer hover:underline"
-                onClick={() => setIsRegistering(false)}
+                onClick={() => {
+                  setIsRegistering(false);
+                  setError('');
+                  setSuccessMessage('');
+                }}
               >
                 Sign in
               </span>
@@ -125,7 +154,11 @@ const Login = ({ setUser }) => {
               New here?{' '}
               <span
                 className="text-cyan-400 cursor-pointer hover:underline"
-                onClick={() => setIsRegistering(true)}
+                onClick={() => {
+                  setIsRegistering(true);
+                  setError('');
+                  setSuccessMessage('');
+                }}
               >
                 Create an account
               </span>
