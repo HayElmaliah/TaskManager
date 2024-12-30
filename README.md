@@ -8,7 +8,9 @@ Visit [TakTick](https://taktick.netlify.app/) to try the application.
 
 ## Preview
 
-![Application Screenshots](screenshots/gif-shots.gif)
+<div style="text-align: center;">
+  <img src="screenshots/gif-shots.gif" alt="Application Screenshots" style="max-width: 375px; width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;"/>
+</div>
 
 ## Features
 
