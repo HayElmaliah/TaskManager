@@ -60,7 +60,7 @@ const TaskList = ({ user, onLogout }) => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/tasks", {
+      const response = await axios.get("https://taktick-backend.onrender.com/api/tasks", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setTasks(response.data);
@@ -72,7 +72,7 @@ const TaskList = ({ user, onLogout }) => {
   const handleAddTask = async (newTask) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/tasks",
+        "https://taktick-backend.onrender.com/api/tasks",
         newTask,
         {
           headers: { Authorization: `Bearer ${user.token}` },
@@ -88,7 +88,7 @@ const TaskList = ({ user, onLogout }) => {
   const handleUpdateTask = async (updatedTask) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/tasks/${updatedTask.task_id}`,
+        `https://taktick-backend.onrender.com/api/tasks/${updatedTask.task_id}`,
         updatedTask,
         {
           headers: { Authorization: `Bearer ${user.token}` },
@@ -103,7 +103,7 @@ const TaskList = ({ user, onLogout }) => {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${taskId}`, {
+      await axios.delete(`https://taktick-backend.onrender.com/api/tasks/${taskId}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setTasks(tasks.filter((task) => task.task_id !== taskId));

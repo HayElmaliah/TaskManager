@@ -11,7 +11,7 @@ const Login = ({ setUser }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      const response = await axios.post('https://taktick-backend.onrender.com/api/users/login', {
         username,
         password,
       });
@@ -25,7 +25,7 @@ const Login = ({ setUser }) => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/users/register', {
+      await axios.post('https://taktick-backend.onrender.com/api/users/register', {
         username,
         password,
       });

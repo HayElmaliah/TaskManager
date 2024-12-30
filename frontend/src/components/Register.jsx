@@ -17,10 +17,10 @@ const Register = () => {
 
     try {
       // Send registration request
-      const registerResponse = await axios.post("http://localhost:5000/api/users/register", { username, password });
+      const registerResponse = await axios.post("https://taktick-backend.onrender.com/api/users/register", { username, password });
 
       // Automatically log in the user after successful registration
-      const loginResponse = await axios.post("http://localhost:5000/api/users/login", {
+      const loginResponse = await axios.post("https://taktick-backend.onrender.com/api/users/login", {
         username,
         password,
       });
