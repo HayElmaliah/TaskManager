@@ -60,7 +60,7 @@ const TaskList = ({ user, onLogout }) => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("https://taktick-backend.onrender.com/api/tasks", {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/tasks`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setTasks(response.data);

@@ -11,13 +11,14 @@ const Login = ({ setUser }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://taktick-backend.onrender.com/api/users/login', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
         username,
         password,
       });
       setUser(response.data); // Save user data
       setError('');
     } catch (error) {
+      console.error("Login error:", error); // debugging
       setError(error.response?.data?.message || 'Login failed');
     }
   };
@@ -25,7 +26,7 @@ const Login = ({ setUser }) => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://taktick-backend.onrender.com/api/users/register', {
+      await axios.post(`${import.meta.env.VITE_API_URL}/users/register`, {
         username,
         password,
       });
@@ -33,6 +34,7 @@ const Login = ({ setUser }) => {
       setIsRegistering(false); // Switch to login form
       setError('');
     } catch (error) {
+      console.error("Registration error:", error);
       setError(error.response?.data?.message || 'Registration failed');
     }
   };
